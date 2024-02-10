@@ -1,0 +1,32 @@
+version: "3"
+
+services:
+  app:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    volumes:
+      - '.:/var/www/html'
+    networks:
+      - funpay
+    depends_on:
+      - database
+  database:
+    image: mysql:5.7
+    volumes:
+      - mysql:/var/lib/mysql
+    ports:
+      - '3306:3306'
+    networks:
+      - funpay
+    environment:
+      MYSQL_RANDOM_ROOT_PASSWORD: 1
+      MYSQL_DATABASE: database
+      MYSQL_USER: funpay
+      MYSQL_PASSWORD: password
+
+volumes:
+  mysql:
+networks:
+  funpay:
+    driver: bridge
